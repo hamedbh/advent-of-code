@@ -1,6 +1,8 @@
+import time
+
 import click
 
-from aoc2024.utils import load_lines, save_answer
+from aoc2024.utils import load_lines, save_answer, save_timing
 
 
 def parse_input(lines: list[str]) -> tuple[list[int], list[int]]:
@@ -60,14 +62,22 @@ def main(test: bool, part: str) -> None:
     lines = load_lines(day, use_example=test)
 
     if part in ("1", "both"):
+        start = time.perf_counter()
         answer1 = solve_part1(lines)
-        print(f"Part 1: {answer1}")
+        elapsed1 = time.perf_counter() - start
+        print(f"Part 1: {answer1} ({elapsed1:.3f}s)")
         save_answer(day, 1, answer1, use_example=test)
+        if not test:
+            save_timing(day, 1, elapsed1)
 
     if part in ("2", "both"):
+        start = time.perf_counter()
         answer2 = solve_part2(lines)
-        print(f"Part 2: {answer2}")
+        elapsed2 = time.perf_counter() - start
+        print(f"Part 2: {answer2} ({elapsed2:.3f}s)")
         save_answer(day, 2, answer2, use_example=test)
+        if not test:
+            save_timing(day, 2, elapsed2)
 
 
 if __name__ == "__main__":

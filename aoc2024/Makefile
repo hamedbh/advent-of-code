@@ -1,8 +1,11 @@
+# Set UV_ENV_FILE to load .env from project root
+export UV_ENV_FILE = ../.env
+
 # Find all input data files and generate corresponding answer file paths
 SOURCE_DATA_FILES=$(wildcard data/inputs/day*.txt)
 ANSWER_FILES=$(patsubst data/inputs/day%.txt,data/outputs/day%_part1.txt data/outputs/day%_part2.txt,$(SOURCE_DATA_FILES))
 
-.PHONY: help python clean lint format
+.PHONY: help python clean lint format setup-day
 
 python: $(ANSWER_FILES) ## Run all Python solutions
 
@@ -11,19 +14,28 @@ data/outputs/day%_part1.txt data/outputs/day%_part2.txt: aoc2024/day%.py data/in
 	@echo "Running day$*..."
 	@uv run python3 -m aoc2024.day$*
 
-day%: ## Run solution for specific day
+## Run solution for specific day
+day%: 
 	@$(MAKE) data/outputs/day$*_part1.txt data/outputs/day$*_part2.txt
 
-test-day%: ## Test solution for specific day with example data
+## Test solution for specific day with example data
+test-day%: 
 	@uv run python3 -m aoc2024.day$* --test
 
-lint: ## Run ruff linter
+## Set up files for a new day (usage: make setup-day DAY=05)
+setup-day:
+	@uv run python3 -m aoc2024.setup_day --day $(DAY)
+
+## Run ruff linter
+lint:
 	@uv run ruff check .
 
-format: ## Format code with ruff
+## Format code with ruff
+format: 
 	@uv run ruff format .
 
-clean: ## Remove output files
+## Remove output files
+clean: 
 	@rm -f data/outputs/*.txt data/example_outputs/*.txt
 
 ###############################################################################
