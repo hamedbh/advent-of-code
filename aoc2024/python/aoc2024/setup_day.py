@@ -123,7 +123,9 @@ def main(day: int, year: int) -> None:
     # Define paths
     input_file = locations.INPUTS_DIR / f"day{day:02d}.txt"
     example_file = locations.EXAMPLES_DIR / f"day{day:02d}.txt"
-    python_file = locations.PROJECT_ROOT / "aoc2024" / f"day{day:02d}.py"
+    python_file = (
+        locations.PROJECT_ROOT / "python" / "aoc2024" / f"day{day:02d}.py"
+    )
 
     created_files = []
 

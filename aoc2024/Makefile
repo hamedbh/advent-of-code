@@ -12,7 +12,7 @@ ANSWER_FILES=$(ANSWER_FILES_PART1) $(ANSWER_FILES_PART2)
 python: $(ANSWER_FILES) ## Run all Python solutions
 
 # Pattern rule to generate answer files from input data and Python scripts
-data/outputs/day%_part1.txt data/outputs/day%_part2.txt: aoc2024/day%.py data/inputs/day%.txt
+data/outputs/day%_part1.txt data/outputs/day%_part2.txt: python/aoc2024/day%.py data/inputs/day%.txt
 	@echo "Running day$*..."
 	@uv run python3 -m aoc2024.day$*
 
