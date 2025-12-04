@@ -7,7 +7,7 @@ TIMINGS_FILENAME = "timings.csv"
 
 
 def find_project_root() -> Path:
-    """Find project root by looking for pyproject.toml.
+    """Find project root by looking for .venv directory.
 
     Returns:
         Path to project root directory
@@ -17,10 +17,10 @@ def find_project_root() -> Path:
     """
     current = Path(__file__).parent
     while current != current.parent:
-        if (current / "pyproject.toml").exists():
+        if (current / ".venv").exists():
             return current
         current = current.parent
-    raise RuntimeError("Could not find project root (no pyproject.toml found)")
+    raise RuntimeError("Could not find project root (no .venv found)")
 
 
 # Project paths
