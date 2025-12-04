@@ -1,0 +1,4 @@
+{
+  "year": "2024",
+  "package_name": "aoc{{ cookiecutter.year }}"
+}
