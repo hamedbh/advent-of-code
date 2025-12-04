@@ -1,9 +1,7 @@
 import csv
 from datetime import datetime
-from pathlib import Path
 
-# Configuration constants
-TIMINGS_FILE = "timings.csv"
+from aoc2024 import locations
 
 
 def load_data(day: int, use_example: bool = False) -> str:
@@ -16,12 +14,10 @@ def load_data(day: int, use_example: bool = False) -> str:
     Returns:
         Raw input data as string
     """
-    data_dir = Path(__file__).parent.parent / "data"
-
     if use_example:
-        file_path = data_dir / "examples" / f"day{day:02d}.txt"
+        file_path = locations.EXAMPLES_DIR / f"day{day:02d}.txt"
     else:
-        file_path = data_dir / "inputs" / f"day{day:02d}.txt"
+        file_path = locations.INPUTS_DIR / f"day{day:02d}.txt"
 
     if not file_path.exists():
         raise FileNotFoundError(f"Data file not found: {file_path}")
@@ -45,12 +41,10 @@ def save_answer(
         answer: The answer to save
         use_example: If True, save to example_outputs, else outputs
     """
-    data_dir = Path(__file__).parent.parent / "data"
-
     if use_example:
-        output_dir = data_dir / "example_outputs"
+        output_dir = locations.EXAMPLE_OUTPUTS_DIR
     else:
-        output_dir = data_dir / "outputs"
+        output_dir = locations.OUTPUTS_DIR
 
     output_dir.mkdir(exist_ok=True)
     output_file = output_dir / f"day{day:02d}_part{part}.txt"
@@ -68,11 +62,8 @@ def save_timing(
         time_seconds: Execution time in seconds
         language: Programming language used (default: "python")
     """
-    data_dir = Path(__file__).parent.parent / "data"
-    timings_dir = data_dir / "timings"
-    timings_dir.mkdir(exist_ok=True)
-
-    csv_file = timings_dir / TIMINGS_FILE
+    locations.TIMINGS_DIR.mkdir(exist_ok=True)
+    csv_file = locations.TIMINGS_FILE
     file_exists = csv_file.exists()
 
     with open(csv_file, "a", newline="") as f:

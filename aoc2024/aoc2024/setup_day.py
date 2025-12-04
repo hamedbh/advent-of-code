@@ -1,8 +1,9 @@
 import os
-from pathlib import Path
 
 import click
 import httpx
+
+from aoc2024 import locations
 
 
 def get_session_cookie() -> str:
@@ -120,11 +121,9 @@ def main(day: int, year: int) -> None:
         raise click.Abort()
 
     # Define paths
-    base_dir = Path(__file__).parent.parent
-    data_dir = base_dir / "data"
-    input_file = data_dir / "inputs" / f"day{day:02d}.txt"
-    example_file = data_dir / "examples" / f"day{day:02d}.txt"
-    python_file = base_dir / "aoc2024" / f"day{day:02d}.py"
+    input_file = locations.INPUTS_DIR / f"day{day:02d}.txt"
+    example_file = locations.EXAMPLES_DIR / f"day{day:02d}.txt"
+    python_file = locations.PROJECT_ROOT / "aoc2024" / f"day{day:02d}.py"
 
     created_files = []
 

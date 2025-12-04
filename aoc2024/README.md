@@ -20,3 +20,12 @@ Solutions for [Advent of Code 2024](https://adventofcode.com/2024).
 
 ---
 
+## Day 03 ⭐⭐
+
+| Part | Answer | Python (s) |
+|------|--------|----------|
+| 1 | 0 | 0.000001 |
+| 2 | 0 | 0.000001 |
+
+---
+

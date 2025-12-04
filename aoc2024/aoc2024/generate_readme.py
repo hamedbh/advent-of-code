@@ -1,5 +1,6 @@
 import csv
-from pathlib import Path
+
+from aoc2024 import locations
 
 
 def get_all_timings() -> dict[tuple[int, int, str], float]:
@@ -8,9 +9,7 @@ def get_all_timings() -> dict[tuple[int, int, str], float]:
     Returns:
         Dict mapping (day, part, language) to time in seconds
     """
-    timings_file = (
-        Path(__file__).parent.parent / "data" / "timings" / "timings.csv"
-    )
+    timings_file = locations.TIMINGS_FILE
 
     if not timings_file.exists():
         return {}
@@ -32,7 +31,7 @@ def get_answers() -> dict[tuple[int, int], str]:
     Returns:
         Dict mapping (day, part) to answer
     """
-    outputs_dir = Path(__file__).parent.parent / "data" / "outputs"
+    outputs_dir = locations.OUTPUTS_DIR
 
     if not outputs_dir.exists():
         return {}
@@ -129,7 +128,7 @@ Solutions for [Advent of Code 2024](https://adventofcode.com/2024).
 def main():
     """Generate and write README.md."""
     readme_content = generate_readme()
-    readme_path = Path(__file__).parent.parent / "README.md"
+    readme_path = locations.PROJECT_ROOT / "README.md"
     readme_path.write_text(readme_content)
     print(f"Generated {readme_path}")
 
