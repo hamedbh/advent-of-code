@@ -3,9 +3,11 @@ export UV_ENV_FILE = ../.env
 
 # Find all input data files and generate corresponding answer file paths
 SOURCE_DATA_FILES=$(wildcard data/inputs/day*.txt)
-ANSWER_FILES=$(patsubst data/inputs/day%.txt,data/outputs/day%_part1.txt data/outputs/day%_part2.txt,$(SOURCE_DATA_FILES))
+ANSWER_FILES_PART1=$(patsubst data/inputs/day%.txt,data/outputs/day%_part1.txt,$(SOURCE_DATA_FILES))
+ANSWER_FILES_PART2=$(patsubst data/inputs/day%.txt,data/outputs/day%_part2.txt,$(SOURCE_DATA_FILES))
+ANSWER_FILES=$(ANSWER_FILES_PART1) $(ANSWER_FILES_PART2)
 
-.PHONY: help python clean lint format setup-day
+.PHONY: help python clean lint format setup-day readme
 
 python: $(ANSWER_FILES) ## Run all Python solutions
 
@@ -25,6 +27,10 @@ test-day%:
 ## Set up files for a new day (usage: make setup-day DAY=05)
 setup-day:
 	@uv run python3 -m aoc2024.setup_day --day $(DAY)
+
+## Generate README.md from solutions
+readme:
+	@uv run python3 -m aoc2024.generate_readme
 
 ## Run ruff linter
 lint:
