@@ -38,3 +38,12 @@ Solutions for [Advent of Code 2025](https://adventofcode.com/2025).
 
 ---
 
+## Day 05 ⭐⭐
+
+| Part | Answer | Python (s) |
+|------|--------|----------|
+| 1 | 617 | 0.007118 |
+| 2 | 338258295736104 | 0.000785 |
+
+---
+
