@@ -9,7 +9,8 @@ ANSWER_FILES=$(ANSWER_FILES_PART1) $(ANSWER_FILES_PART2)
 
 .PHONY: help python clean lint format setup-day readme
 
-python: $(ANSWER_FILES) ## Run all Python solutions
+## Run all Python solutions
+python: $(ANSWER_FILES) 
 
 # Pattern rule to generate answer files from input data and Python scripts
 data/outputs/day%_part1.txt data/outputs/day%_part2.txt: python/aoc2025/day%.py data/inputs/day%.txt
