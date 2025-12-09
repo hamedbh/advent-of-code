@@ -14,15 +14,26 @@ def parse_input(lines: list[str]) -> tuple[list[tuple[int, int]], list[int]]:
             fresh_ranges.append(tuple(int(x) for x in item.split("-")))
         elif item:
             available.append(int(item))
-    return fresh_ranges, available
+    sorted_ranges = sorted(fresh_ranges)
+    merged_ranges = []
+    current_range = sorted_ranges[0]
+    for lower, upper in sorted_ranges[1:]:
+        if current_range[1] >= lower - 1:
+            current_range = (current_range[0], max(current_range[1], upper))
+        else:
+            merged_ranges.append(current_range)
+            current_range = (lower, upper)
+    merged_ranges.append(current_range)
+
+    return sorted_ranges, available
 
 
 def solve_part1(lines: list[str]) -> int:
     """Solve part 1."""
-    fresh_ranges, available = parse_input(lines)
+    sorted_ranges, available = parse_input(lines)
     fresh_count = 0
     for item in available:
-        for lower, upper in fresh_ranges:
+        for lower, upper in sorted_ranges:
             if lower <= item <= upper:
                 fresh_count += 1
                 break
@@ -31,20 +42,9 @@ def solve_part1(lines: list[str]) -> int:
 
 def solve_part2(lines: list[str]) -> int:
     """Solve part 2."""
-    fresh_ranges, _ = parse_input(lines)
-    sorted_ranges = sorted(fresh_ranges)
-    merged_ranges = []
-    current_range = sorted_ranges[0]
-    for i in range(1, len(sorted_ranges)):
-        lower, upper = sorted_ranges[i]
-        if current_range[1] >= lower:
-            current_range = (current_range[0], max(current_range[1], upper))
-        else:
-            merged_ranges.append(current_range)
-            current_range = (lower, upper)
-    merged_ranges.append(current_range)
+    sorted_ranges, _ = parse_input(lines)
     total = 0
-    for lower, upper in merged_ranges:
+    for lower, upper in sorted_ranges:
         total += upper - lower + 1
     return total
 
