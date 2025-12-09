@@ -1,16 +1,9 @@
 import time
 from itertools import chain
-from math import floor, log10
 
 import click
 
 from aoc2025.utils import load_lines, save_answer, save_timing
-
-
-def decimal_length(n: int) -> int:
-    if n == 0:
-        return 1
-    return floor(log10(abs(n))) + 1
 
 
 def proper_divisors(n: int) -> list[int]:
@@ -39,12 +32,12 @@ def solve_part1(lines: list[str]) -> int:
     invalid_sum = 0
     for bounds in input_data:
         for id in range(bounds[0], bounds[1] + 1):
-            num_digits = decimal_length(id)
+            idstring = str(id)
+            num_digits = len(idstring)
             # Any id with an odd number of digits will always be valid
             if num_digits % 2 != 0:
                 continue
-            string_id = str(id)
-            if string_id[: num_digits // 2] == string_id[num_digits // 2 :]:
+            if idstring[: num_digits // 2] == idstring[num_digits // 2 :]:
                 invalid_sum += id
     return invalid_sum
 
@@ -52,7 +45,7 @@ def solve_part1(lines: list[str]) -> int:
 def solve_part2(lines: list[str]) -> int:
     """Solve part 2."""
     input_data = parse_input(lines)
-    max_length = decimal_length(max(chain.from_iterable(input_data)))
+    max_length = len(str(max(chain.from_iterable(input_data))))
     all_proper_divisors = {
         n: proper_divisors(n) for n in range(2, max_length + 1)
     }
@@ -60,7 +53,7 @@ def solve_part2(lines: list[str]) -> int:
     for bounds in input_data:
         for id in range(bounds[0], bounds[1] + 1):
             idstring = str(id)
-            num_digits = decimal_length(id)
+            num_digits = len(idstring)
             if num_digits < 2:
                 continue
             for d in all_proper_divisors[num_digits]:

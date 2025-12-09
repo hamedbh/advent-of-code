@@ -18,8 +18,7 @@ data/outputs/day%_part1.txt data/outputs/day%_part2.txt: python/aoc2025/day%.py 
 	@uv run python3 -m aoc2025.day$*
 
 ## Run solution for specific day
-day%:
-	@$(MAKE) data/outputs/day$*_part1.txt data/outputs/day$*_part2.txt
+day%: data/outputs/day$*_part1.txt data/outputs/day$*_part2.txt
 
 ## Test solution for specific day with example data
 test-day%:

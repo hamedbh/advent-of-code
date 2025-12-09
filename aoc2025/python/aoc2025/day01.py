@@ -30,10 +30,8 @@ def parse_input(lines: list[str]):
 def solve_part1(lines: list[str]) -> int:
     """Solve part 1."""
     input_data = parse_input(lines)
-    mod_positions = list(
-        accumulate([50] + input_data, lambda x, y: (x + y) % 100)
-    )
-    return sum([position == 0 for position in mod_positions])
+    mod_positions = accumulate([50] + input_data, lambda x, y: (x + y) % 100)
+    return sum(position == 0 for position in mod_positions)
 
 
 def solve_part2(lines: list[str]) -> int:
@@ -41,10 +39,8 @@ def solve_part2(lines: list[str]) -> int:
     input_data = parse_input(lines)
     positions = list(accumulate([50] + input_data))
     return sum(
-        [
-            count_zero_clicks(start, turn)
-            for start, turn in zip(positions, input_data, strict=False)
-        ]
+        count_zero_clicks(start, turn)
+        for start, turn in zip(positions, input_data, strict=False)
     )
 
 

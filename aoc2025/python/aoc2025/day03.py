@@ -17,30 +17,27 @@ def locate_max(batteries: tuple[int, ...]) -> tuple[int, int]:
 def solve_part1(lines: list[str]) -> int:
     """Solve part 1."""
     input_data = parse_input(lines)
-    left_tuples = [locate_max(bank[:-1]) for bank in input_data]
-    right_tuples = [
-        locate_max(bank[left[0] + 1 :])
-        for left, bank in zip(left_tuples, input_data, strict=True)
-    ]
-    max_values = [
-        (10 * left[1]) + right[1]
-        for left, right in zip(left_tuples, right_tuples, strict=True)
-    ]
-    return sum(max_values)
+    total = 0
+    for bank in input_data:
+        left = locate_max(bank[:-1])
+        right = locate_max(bank[left[0] + 1 :])
+        total += 10 * left[1] + right[1]
+    return total
 
 
 def solve_part2(lines: list[str]) -> int:
     """Solve part 2."""
     input_data = parse_input(lines)
     slices = range(-11, 1)
+    powers = [10 ** (-i) for i in slices]
     total = 0
     for bank in input_data:
         left_slice = 0
-        for i in slices:
+        for i, power in zip(slices, powers, strict=True):
             right_slice = i if i < 0 else len(bank)
             index, value = locate_max(bank[left_slice:right_slice])
             left_slice += index + 1
-            total += value * (10 ** (-i))
+            total += value * power
     return total
 
 

@@ -17,12 +17,15 @@ def solve_part1(lines: list[str]) -> int:
     m = len(input_data)
     n = len(input_data[0])
     total = 0
+    all_neighbours = {
+        (i, j): find_neighbours(i, j, m, n) for i in range(m) for j in range(n)
+    }
     for i in range(m):
         for j in range(n):
             if input_data[i][j] != 1:
                 continue
-            neighbours = find_neighbours(i, j, m, n)
-            roll_count = sum([input_data[row][col] for row, col in neighbours])
+            neighbours = all_neighbours[(i, j)]
+            roll_count = sum(input_data[row][col] for row, col in neighbours)
             if roll_count < 4:
                 total += 1
     return total
@@ -34,24 +37,26 @@ def solve_part2(lines: list[str]) -> int:
     m = len(input_data)
     n = len(input_data[0])
     total = 0
+    all_neighbours = {
+        (i, j): find_neighbours(i, j, m, n) for i in range(m) for j in range(n)
+    }
     while True:
         removable = []
         for i in range(m):
             for j in range(n):
                 if input_data[i][j] != 1:
                     continue
-                neighbours = find_neighbours(i, j, m, n)
+                neighbours = all_neighbours[(i, j)]
                 roll_count = sum(
-                    [input_data[row][col] for row, col in neighbours]
+                    input_data[row][col] for row, col in neighbours
                 )
                 if roll_count < 4:
                     removable.append((i, j))
-        if len(removable) > 0:
-            total += len(removable)
-            for row, col in removable:
-                input_data[row][col] = 0
-        else:
+        if not removable:
             break
+        total += len(removable)
+        for row, col in removable:
+            input_data[row][col] = 0
     return total
 
 
