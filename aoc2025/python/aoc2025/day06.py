@@ -18,7 +18,9 @@ def parse_input_human(
     return operands, operators
 
 
-def parse_input_ceph(lines: list[str]):
+def parse_input_ceph(
+    lines: list[str],
+) -> tuple[tuple[int, ...], tuple[Callable[[tuple[int, ...]], int], ...]]:
     """
     Parse the input lines in the cephalopod style, i.e.
     right-to-left and top to bottom.
