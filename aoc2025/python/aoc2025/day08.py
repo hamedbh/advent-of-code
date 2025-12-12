@@ -22,10 +22,14 @@ def find_root(x: int, parents: list[int]) -> int:
             current = parents[current]
 
 
-def connect_boxes(x: int, y: int, parents: list[int]) -> None:
+def connect_boxes(x: int, y: int, parents: list[int]) -> int:
     root_x = find_root(x, parents)
     root_y = find_root(y, parents)
-    parents[root_x] = root_y
+    if root_x != root_y:
+        parents[root_x] = root_y
+        return -1
+    else:
+        return 0
 
 
 def solve_part1(lines: list[str], test: bool) -> int:
@@ -62,10 +66,10 @@ def solve_part2(lines: list[str]) -> int:
         for r, c in zip(rows[indices], cols[indices], strict=True)
     ]
     parents = list(range(len(boxes)))
+    n_circuits = len(boxes)
     for row, col in box_pairs:
-        connect_boxes(row, col, parents)
-        roots = [find_root(i, parents) for i in range(len(boxes))]
-        if len(set(roots)) == 1:
+        n_circuits += connect_boxes(row, col, parents)
+        if n_circuits == 1:
             return int(boxes[row, 0] * boxes[col, 0])
 
 
