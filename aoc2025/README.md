@@ -74,3 +74,12 @@ Solutions for [Advent of Code 2025](https://adventofcode.com/2025).
 
 ---
 
+## Day 09 ⭐⭐
+
+| Part | Answer | Python (s) |
+|------|--------|----------|
+| 1 | 4790063600 | 0.081051 |
+| 2 | 1516172795 | 0.294546 |
+
+---
+
