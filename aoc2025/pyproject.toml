@@ -20,6 +20,7 @@ packages = ["python/aoc2025"]
 [tool.uv]
 dev-dependencies = [
     "ruff>=0.14.7",
+    "ty>=0.0.8",
 ]
 
 [tool.ruff]

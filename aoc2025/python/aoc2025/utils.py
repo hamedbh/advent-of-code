@@ -1,5 +1,6 @@
 import csv
 from datetime import datetime
+from typing import Any
 
 from aoc2025 import locations
 
@@ -31,7 +32,7 @@ def load_lines(day: int, use_example: bool = False) -> list[str]:
 
 
 def save_answer(
-    day: int, part: int, answer: str, use_example: bool = False
+    day: int, part: int, answer: Any, use_example: bool = False
 ) -> None:
     """Save an answer to the appropriate output file.
 

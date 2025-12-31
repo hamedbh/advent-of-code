@@ -29,7 +29,7 @@ from aoc2025.utils import load_lines, save_answer, save_timing
 
 def parse_input(lines: list[str]) -> list[tuple[int, int]]:
     """Parse the input lines."""
-    return [tuple(map(int, line.split(","))) for line in lines]
+    return [tuple(map(int, line.split(","))) for line in lines]  # ty:ignore[invalid-return-type]
 
 
 def calculate_area(p1: tuple[int, int], p2: tuple[int, int]) -> int:

@@ -53,7 +53,7 @@ def solve_part1(lines: list[str], test: bool) -> int:
     return prod(v for _, v in circuit_sizes.most_common(3))
 
 
-def solve_part2(lines: list[str]) -> int:
+def solve_part2(lines: list[str]) -> int | None:
     """Solve part 2."""
     boxes = parse_input(lines)
     diffs = boxes[:, np.newaxis, :] - boxes[np.newaxis, :, :]

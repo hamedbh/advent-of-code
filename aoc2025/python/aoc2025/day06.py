@@ -42,7 +42,7 @@ def parse_input_ceph(
         tuple(int("".join(c for c in column if c != " ")) for column in group)
         for group in groups
     )
-    return operands, operators
+    return operands, operators  # ty:ignore[invalid-return-type]
 
 
 def solve_part1(lines: list[str]) -> int:
