@@ -39,17 +39,19 @@ def solve_part2(lines: list[str]) -> int:
     """Solve part 2."""
     graph = parse_input(lines)
     count_paths = make_path_counter(graph)
-    route1 = (
-        count_paths("svr", "dac")
-        * count_paths("dac", "fft")
-        * count_paths("fft", "out")
-    )
-    route2 = (
-        count_paths("svr", "fft")
-        * count_paths("fft", "dac")
-        * count_paths("dac", "out")
-    )
-    return route1 + route2
+    dac_fft = count_paths("dac", "fft")
+    if dac_fft:
+        return (
+            count_paths("svr", "dac")
+            * count_paths("dac", "fft")
+            * count_paths("fft", "out")
+        )
+    else:
+        return (
+            count_paths("svr", "fft")
+            * count_paths("fft", "dac")
+            * count_paths("dac", "out")
+        )
 
 
 @click.command()
