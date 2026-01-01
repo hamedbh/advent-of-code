@@ -101,3 +101,12 @@ Solutions for [Advent of Code 2025](https://adventofcode.com/2025).
 
 ---
 
+## Day 12 ⭐⭐
+
+| Part | Answer | Python (s) |
+|------|--------|----------|
+| 1 | 519 | 0.003929 |
+| 2 | 0 | 0.000001 |
+
+---
+
