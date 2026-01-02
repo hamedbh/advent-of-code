@@ -1,6 +1,10 @@
 use anyhow::Result;
 use std::collections::{HashMap, HashSet};
 
+fn digit_length(n: i64) -> i64 {
+    (n as f64).log10().floor() as i64 + 1
+}
+
 fn proper_divisors(n: i64) -> Vec<i64> {
     if n <= 1 {
         return Vec::new();
@@ -41,15 +45,32 @@ pub fn solve_part1(lines: &[String]) -> Result<i64> {
     let input = parse_input(lines);
     let mut invalid_sum: i64 = 0;
     for bounds in input {
+        let mut num_digits = digit_length(bounds.0);
+        let mut next_boundary = 10_i64.pow(num_digits as u32);
+        let mut divisor = 10_i64.pow((num_digits / 2) as u32);
+
         for id in bounds.0..=bounds.1 {
-            let idstring = id.to_string();
-            let num_digits = idstring.len();
+            if id >= next_boundary {
+                num_digits += 1;
+                next_boundary *= 10;
+                divisor = 10_i64.pow((num_digits / 2) as u32);
+            }
             if num_digits % 2 != 0 {
                 continue;
             }
-            if &idstring[0..num_digits / 2] == &idstring[num_digits / 2..] {
+            let left: i64 = id / divisor;
+            let right: i64 = id % divisor;
+            if left == right {
                 invalid_sum += id
             }
+            // let idstring = id.to_string();
+            // let num_digits = idstring.len();
+            // if num_digits % 2 != 0 {
+            //     continue;
+            // }
+            // if &idstring[0..num_digits / 2] == &idstring[num_digits / 2..] {
+            //     invalid_sum += id
+            // }
         }
     }
 
