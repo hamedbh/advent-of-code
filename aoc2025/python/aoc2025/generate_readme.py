@@ -37,7 +37,7 @@ def get_answers() -> dict[tuple[int, int], str]:
         return {}
 
     answers = {}
-    for output_file in sorted(outputs_dir.glob("day*_part*.txt")):
+    for output_file in sorted(outputs_dir.glob("*/day*_part*.txt")):
         # Parse filename: day01_part1.txt
         parts = output_file.stem.split("_")
         day = int(parts[0].replace("day", ""))
@@ -96,12 +96,14 @@ Solutions for [Advent of Code 2025](https://adventofcode.com/2025).
         readme += "| Part | Answer |"
         for lang in languages:
             readme += f" {lang.capitalize()} (s) |"
+        readme += " Rust speedup |"
         readme += "\n"
 
         # Table separator
         readme += "|------|--------|"
         for _ in languages:
             readme += "----------|"
+        readme += "---------|"
         readme += "\n"
 
         # Add rows for each part
@@ -117,6 +119,15 @@ Solutions for [Advent of Code 2025](https://adventofcode.com/2025).
                         readme += f" {timings[time_key]:.6f} |"
                     else:
                         readme += " N/A |"
+
+                # Calculate speedup (Python / Rust)
+                python_time = timings.get((day, part, "python"))
+                rust_time = timings.get((day, part, "rust"))
+                if python_time and rust_time:
+                    speedup = python_time / rust_time
+                    readme += f" {speedup:.1f}x |"
+                else:
+                    readme += " |"
 
                 readme += "\n"
 

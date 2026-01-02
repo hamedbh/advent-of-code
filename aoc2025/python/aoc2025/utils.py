@@ -45,7 +45,7 @@ def save_answer(
     if use_example:
         output_dir = locations.EXAMPLE_OUTPUTS_DIR
     else:
-        output_dir = locations.OUTPUTS_DIR
+        output_dir = locations.PYTHON_OUTPUTS_DIR
 
     output_dir.mkdir(exist_ok=True)
     output_file = output_dir / f"day{day:02d}_part{part}.txt"

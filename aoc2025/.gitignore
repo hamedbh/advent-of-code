@@ -14,3 +14,4 @@ venv/
 Thumbs.db
 
 CLAUDE.md
+rust/target

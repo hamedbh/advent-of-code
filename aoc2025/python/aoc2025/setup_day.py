@@ -111,6 +111,26 @@ if __name__ == "__main__":
 '''
 
 
+def create_rust_template(day: int) -> str:
+    """Create Rust solution template."""
+    return """use anyhow::Result;
+pub fn parse_input(lines: &[String]) -> Vec<String> {
+    // TODO: Implement parsing
+    lines.to_vec()
+}
+pub fn solve_part1(lines: &[String]) -> Result<i64> {
+    let _input = parse_input(lines);
+    // TODO: Implement part 1
+    Ok(0)
+}
+pub fn solve_part2(lines: &[String]) -> Result<i64> {
+    let _input = parse_input(lines);
+    // TODO: Implement part 2
+    Ok(0)
+}
+"""
+
+
 @click.command()
 @click.option("--day", type=int, required=True, help="Day number (1-25)")
 @click.option("--year", type=int, default=2025, help="Year (default: 2025)")
@@ -164,6 +184,25 @@ def main(day: int, year: int) -> None:
         click.echo(f"\nCreated {len(created_files)} new file(s)")
     else:
         click.echo("\nAll files already exist")
+
+    # Create Rust module
+    rust_file = locations.PROJECT_ROOT / "rust" / "src" / f"day{day:02d}.rs"
+    if rust_file.exists():
+        click.echo(f"✓ Rust file already exists: {rust_file}")
+    else:
+        template = create_rust_template(day)
+        rust_file.write_text(template)
+        click.echo(f"✓ Created Rust file: {rust_file}")
+        created_files.append(str(rust_file))
+    # Always show the reminder for Rust updates
+    if not rust_file.exists() or True:  # Always show for new setups
+        click.echo("\n⚠️  Remember to update rust/src/main.rs:")
+        click.echo(f"1. Add: mod day{day:02d};")
+        click.echo("2. Add to match statement:")
+        click.echo(
+            f"  {day} => run_day(&lines, cli.day, &cli.part, cli.test,"
+            f" day{day:02d}::solve_part1, day{day:02d}::solve_part2)?,"
+        )
 
 
 if __name__ == "__main__":

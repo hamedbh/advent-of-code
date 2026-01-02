@@ -1,28 +1,56 @@
 # Set UV_ENV_FILE to load .env from project root
 export UV_ENV_FILE = ../.env
 
+.PHONY: help python rust clean lint format setup-day readme rust-build
+
 # Find all input data files and generate corresponding answer file paths
 SOURCE_DATA_FILES=$(wildcard data/inputs/day*.txt)
-ANSWER_FILES_PART1=$(patsubst data/inputs/day%.txt,data/outputs/day%_part1.txt,$(SOURCE_DATA_FILES))
-ANSWER_FILES_PART2=$(patsubst data/inputs/day%.txt,data/outputs/day%_part2.txt,$(SOURCE_DATA_FILES))
-ANSWER_FILES=$(ANSWER_FILES_PART1) $(ANSWER_FILES_PART2)
+# Generate Python answer file paths
+PY_ANSWER_FILES_PART1=$(patsubst data/inputs/day%.txt,data/outputs/python/day%_part1.txt,$(SOURCE_DATA_FILES))
+PY_ANSWER_FILES_PART2=$(patsubst data/inputs/day%.txt,data/outputs/python/day%_part2.txt,$(SOURCE_DATA_FILES))
+PY_ANSWER_FILES=$(PY_ANSWER_FILES_PART1) $(PY_ANSWER_FILES_PART2)
+# Find all Rust day source files and generate corresponding answer file paths
+RUST_SOURCE_FILES=$(wildcard rust/src/day*.rs)
+RUST_ANSWER_FILES_PART1=$(patsubst rust/src/day%.rs,data/outputs/rust/day%_part1.txt,$(RUST_SOURCE_FILES))
+RUST_ANSWER_FILES_PART2=$(patsubst rust/src/day%.rs,data/outputs/rust/day%_part2.txt,$(RUST_SOURCE_FILES))
+RUST_ANSWER_FILES=$(RUST_ANSWER_FILES_PART1) $(RUST_ANSWER_FILES_PART2)
 
-.PHONY: help python clean lint format setup-day readme
 
 ## Run all Python solutions
-python: $(ANSWER_FILES) 
+python: $(PY_ANSWER_FILES) 
 
 # Pattern rule to generate answer files from input data and Python scripts
-data/outputs/day%_part1.txt data/outputs/day%_part2.txt: python/aoc2025/day%.py data/inputs/day%.txt
+data/outputs/python/day%_part1.txt data/outputs/python/day%_part2.txt: python/aoc2025/day%.py data/inputs/day%.txt
 	@echo "Running day$*..."
 	@uv run python3 -m aoc2025.day$*
 
-## Run solution for specific day
-day%: data/outputs/day$*_part1.txt data/outputs/day$*_part2.txt
+## Run Python solution for specific day
+py-day%: data/outputs/python/day%_part1.txt data/outputs/python/day%_part2.txt
+	@:
 
 ## Test solution for specific day with example data
-test-day%:
+py-test-day%:
 	@uv run python3 -m aoc2025.day$* --test
+
+## Run all Rust solutions
+rust: $(RUST_ANSWER_FILES)
+
+# Pattern rule to generate answer files from Rust source
+data/outputs/rust/day%_part1.txt data/outputs/rust/day%_part2.txt: rust/src/day%.rs data/inputs/day%.txt
+	@echo "Running Rust day$*..."
+	@cd rust && cargo run --quiet --release -- --day $(shell echo $* | sed 's/^0*//')
+
+## Run Rust solution for specific day
+rust-day%: data/outputs/rust/day%_part1.txt data/outputs/rust/day%_part2.txt
+	@:
+
+## Test Rust solution for specific day with example data
+rust-test-day%:
+	@cd rust && cargo run -- --day $(shell echo $* | sed 's/^0*//') --test
+
+## Build Rust in release mode
+rust-build:
+	@cd rust && cargo build --release
 
 ## Set up files for a new day (usage: make setup-day DAY=05)
 setup-day:
@@ -42,7 +70,7 @@ format:
 
 ## Remove output files
 clean:
-	@rm -f data/outputs/*.txt data/example_outputs/*.txt
+	@rm -f data/outputs/*/*.txt data/example_outputs/*.txt
 
 ###############################################################################
 # Self Documenting Commands                                                   #
