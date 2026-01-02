@@ -3,6 +3,7 @@ use clap::Parser;
 use std::time::Instant;
 
 mod day01;
+mod day02;
 mod input;
 mod paths;
 
@@ -35,6 +36,14 @@ fn main() -> Result<()> {
             cli.test,
             day01::solve_part1,
             day01::solve_part2,
+        )?,
+        2 => run_day(
+            &lines,
+            cli.day,
+            &cli.part,
+            cli.test,
+            day02::solve_part1,
+            day02::solve_part2,
         )?,
         _ => println!("Day {} not implemented yet", cli.day),
     }

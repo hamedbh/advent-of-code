@@ -1,7 +1,7 @@
 # Set UV_ENV_FILE to load .env from project root
 export UV_ENV_FILE = ../.env
 
-.PHONY: help python rust clean lint format setup-day readme rust-build
+.PHONY: help python rust clean lint format setup-day readme all rust-build
 
 # Find all input data files and generate corresponding answer file paths
 SOURCE_DATA_FILES=$(wildcard data/inputs/day*.txt)
@@ -47,6 +47,9 @@ rust-day%: data/outputs/rust/day%_part1.txt data/outputs/rust/day%_part2.txt
 ## Test Rust solution for specific day with example data
 rust-test-day%:
 	@cd rust && cargo run -- --day $(shell echo $* | sed 's/^0*//') --test
+
+## Build the Python and Rust solutions, then render the README.md
+all: python rust readme
 
 ## Build Rust in release mode
 rust-build:
