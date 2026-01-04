@@ -4,6 +4,7 @@ use std::time::Instant;
 
 mod day01;
 mod day02;
+mod day03;
 mod input;
 mod paths;
 
@@ -44,6 +45,14 @@ fn main() -> Result<()> {
             cli.test,
             day02::solve_part1,
             day02::solve_part2,
+        )?,
+        3 => run_day(
+            &lines,
+            cli.day,
+            &cli.part,
+            cli.test,
+            day03::solve_part1,
+            day03::solve_part2,
         )?,
         _ => println!("Day {} not implemented yet", cli.day),
     }
