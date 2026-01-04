@@ -1,4 +1,5 @@
 use anyhow::Result;
+use rayon::prelude::*;
 use std::collections::{HashMap, HashSet};
 
 fn digit_length(n: i64) -> i64 {
@@ -43,67 +44,88 @@ pub fn parse_input(lines: &[String]) -> Vec<(i64, i64)> {
 
 pub fn solve_part1(lines: &[String]) -> Result<i64> {
     let input = parse_input(lines);
-    let mut invalid_sum: i64 = 0;
-    for bounds in input {
-        let mut num_digits = digit_length(bounds.0);
-        let mut next_boundary = 10_i64.pow(num_digits as u32);
-        let mut divisor = 10_i64.pow((num_digits / 2) as u32);
+    let invalid_sum: i64 = input
+        .par_iter()
+        .map(|&bounds| {
+            let mut local_sum = 0;
+            let mut num_digits = digit_length(bounds.0);
+            let mut next_boundary = 10_i64.pow(num_digits as u32);
+            let mut divisor = 10_i64.pow((num_digits / 2) as u32);
 
-        for id in bounds.0..=bounds.1 {
-            if id >= next_boundary {
-                num_digits += 1;
-                next_boundary *= 10;
-                divisor = 10_i64.pow((num_digits / 2) as u32);
+            for id in bounds.0..=bounds.1 {
+                if id >= next_boundary {
+                    num_digits += 1;
+                    next_boundary *= 10;
+                    divisor = 10_i64.pow((num_digits / 2) as u32);
+                }
+                if num_digits % 2 != 0 {
+                    continue;
+                }
+                let left: i64 = id / divisor;
+                let right: i64 = id % divisor;
+                if left == right {
+                    local_sum += id
+                }
             }
-            if num_digits % 2 != 0 {
-                continue;
-            }
-            let left: i64 = id / divisor;
-            let right: i64 = id % divisor;
-            if left == right {
-                invalid_sum += id
-            }
-        }
-    }
+            local_sum
+        })
+        .sum();
 
     Ok(invalid_sum as i64)
 }
 
 pub fn solve_part2(lines: &[String]) -> Result<i64> {
     let input = parse_input(lines);
-    let max_length = input
-        .iter()
-        .flat_map(|&(a, b)| [a, b])
-        .max()
-        .unwrap()
-        .to_string()
-        .len();
+    let max_length =
+        digit_length(input.iter().flat_map(|&(a, b)| [a, b]).max().unwrap());
+    let powers_of_ten: Vec<i64> =
+        (0..=max_length).map(|i| 10_i64.pow(i as u32)).collect();
     let all_proper_divisors: HashMap<i64, Vec<i64>> = (2..=max_length as i64)
         .map(|n| (n, proper_divisors(n)))
         .collect();
-    let mut invalid_sum: i64 = 0;
-    for bounds in input {
-        let mut num_digits = digit_length(bounds.0);
-        let mut next_boundary = 10_i64.pow(num_digits as u32);
-        for id in bounds.0..=bounds.1 {
-            if id >= next_boundary {
-                num_digits += 1;
-                next_boundary *= 10;
-            }
-            if num_digits < 2 {
-                continue;
-            }
-            for &d in &all_proper_divisors[&num_digits] {
-                let pattern = id / 10_i64.pow(num_digits as u32 - d as u32);
-                let repeated =
-                    pattern * ((10_i64.pow(num_digits as u32) - 1) / (10_i64.pow(d as u32) - 1));
-                if id == repeated {
-                    invalid_sum += id;
-                    break;
+    let divisors_with_multipliers: HashMap<i64, Vec<(i64, i64)>> =
+        all_proper_divisors
+            .iter()
+            .map(|(&num_digits, divisors)| {
+                let pairs = divisors
+                    .iter()
+                    .map(|&d| {
+                        let multiplier = (powers_of_ten[num_digits as usize]
+                            - 1)
+                            / (powers_of_ten[d as usize] - 1);
+                        (d, multiplier)
+                    })
+                    .collect();
+                (num_digits, pairs)
+            })
+            .collect();
+    let invalid_sum: i64 = input
+        .par_iter()
+        .map(|&bounds| {
+            let mut num_digits = digit_length(bounds.0);
+            let mut next_boundary = 10_i64.pow(num_digits as u32);
+            let mut local_sum = 0;
+            for id in bounds.0..=bounds.1 {
+                if id >= next_boundary {
+                    num_digits += 1;
+                    next_boundary *= 10;
+                }
+                if num_digits < 2 {
+                    continue;
+                }
+                for &(d, multiplier) in &divisors_with_multipliers[&num_digits]
+                {
+                    let pattern = id / powers_of_ten[(num_digits - d) as usize];
+                    let repeated = pattern * multiplier;
+                    if id == repeated {
+                        local_sum += id;
+                        break;
+                    }
                 }
             }
-        }
-    }
+            local_sum
+        })
+        .sum();
 
-    Ok(invalid_sum as i64)
+    Ok(invalid_sum)
 }

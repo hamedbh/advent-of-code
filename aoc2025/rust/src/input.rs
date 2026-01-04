@@ -30,7 +30,8 @@ pub fn save_answer<T: std::fmt::Display>(
     };
 
     fs::create_dir_all(output_dir)?;
-    let output_file = output_dir.join(format!("day{:02}_part{}.txt", day, part));
+    let output_file =
+        output_dir.join(format!("day{:02}_part{}.txt", day, part));
     fs::write(output_file, answer.to_string())?;
     Ok(())
 }
@@ -47,7 +48,13 @@ pub fn save_timing(day: u8, part: u8, duration: Duration) -> Result<()> {
     let mut wtr = csv::Writer::from_writer(file);
     // Write header if file is new
     if !file_exists {
-        wtr.write_record(&["day", "language", "part", "time_seconds", "timestamp"])?;
+        wtr.write_record(&[
+            "day",
+            "language",
+            "part",
+            "time_seconds",
+            "timestamp",
+        ])?;
     }
     // Write timing data
     wtr.write_record(&[
