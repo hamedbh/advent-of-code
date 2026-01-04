@@ -63,14 +63,6 @@ pub fn solve_part1(lines: &[String]) -> Result<i64> {
             if left == right {
                 invalid_sum += id
             }
-            // let idstring = id.to_string();
-            // let num_digits = idstring.len();
-            // if num_digits % 2 != 0 {
-            //     continue;
-            // }
-            // if &idstring[0..num_digits / 2] == &idstring[num_digits / 2..] {
-            //     invalid_sum += id
-            // }
         }
     }
 
@@ -91,14 +83,21 @@ pub fn solve_part2(lines: &[String]) -> Result<i64> {
         .collect();
     let mut invalid_sum: i64 = 0;
     for bounds in input {
+        let mut num_digits = digit_length(bounds.0);
+        let mut next_boundary = 10_i64.pow(num_digits as u32);
         for id in bounds.0..=bounds.1 {
-            let idstring = id.to_string();
-            let num_digits: i64 = idstring.len() as i64;
+            if id >= next_boundary {
+                num_digits += 1;
+                next_boundary *= 10;
+            }
             if num_digits < 2 {
                 continue;
             }
             for &d in &all_proper_divisors[&num_digits] {
-                if &idstring == &idstring[0..d as usize].repeat((num_digits / d) as usize) {
+                let pattern = id / 10_i64.pow(num_digits as u32 - d as u32);
+                let repeated =
+                    pattern * ((10_i64.pow(num_digits as u32) - 1) / (10_i64.pow(d as u32) - 1));
+                if id == repeated {
                     invalid_sum += id;
                     break;
                 }
