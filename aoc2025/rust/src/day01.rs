@@ -21,8 +21,6 @@ fn count_zero_clicks(start_position: i32, turn_size: i32) -> u64 {
 }
 
 pub fn parse_input(lines: &[String]) -> Vec<i32> {
-    // TODO: Parse lines like "R49", "L13" into numbers
-    // You'll need to handle the direction and convert to signed ints
     lines
         .iter()
         .map(|s| {
