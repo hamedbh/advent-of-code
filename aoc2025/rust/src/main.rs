@@ -8,6 +8,32 @@ mod day03;
 mod input;
 mod paths;
 
+type SolveFn = fn(&[String]) -> Result<i64>;
+
+struct Entry {
+    day: u8,
+    part1: SolveFn,
+    part2: SolveFn,
+}
+
+static DAYS: &[Entry] = &[
+    Entry {
+        day: 1,
+        part1: day01::solve_part1,
+        part2: day01::solve_part2,
+    },
+    Entry {
+        day: 2,
+        part1: day02::solve_part1,
+        part2: day02::solve_part2,
+    },
+    Entry {
+        day: 3,
+        part1: day03::solve_part1,
+        part2: day03::solve_part2,
+    },
+];
+
 #[derive(Parser)]
 #[command(name = "aoc2025")]
 #[command(about = "Advent of Code 2025 - Rust")]
@@ -29,32 +55,17 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
     let lines = input::load_lines(cli.day, cli.test)?;
 
-    match cli.day {
-        1 => run_day(
+    if let Some(entry) = DAYS.iter().find(|e| e.day == cli.day) {
+        run_day(
             &lines,
             cli.day,
             &cli.part,
             cli.test,
-            day01::solve_part1,
-            day01::solve_part2,
-        )?,
-        2 => run_day(
-            &lines,
-            cli.day,
-            &cli.part,
-            cli.test,
-            day02::solve_part1,
-            day02::solve_part2,
-        )?,
-        3 => run_day(
-            &lines,
-            cli.day,
-            &cli.part,
-            cli.test,
-            day03::solve_part1,
-            day03::solve_part2,
-        )?,
-        _ => println!("Day {} not implemented yet", cli.day),
+            entry.part1,
+            entry.part2,
+        )?;
+    } else {
+        println!("Day {} not implemented yet", cli.day);
     }
 
     Ok(())

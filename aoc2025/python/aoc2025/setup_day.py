@@ -198,10 +198,10 @@ def main(day: int, year: int) -> None:
     if not rust_file.exists() or True:  # Always show for new setups
         click.echo("\n⚠️  Remember to update rust/src/main.rs:")
         click.echo(f"1. Add: mod day{day:02d};")
-        click.echo("2. Add to match statement:")
+        click.echo("2. Add to DAYS array:")
         click.echo(
-            f"  {day} => run_day(&lines, cli.day, &cli.part, cli.test,"
-            f" day{day:02d}::solve_part1, day{day:02d}::solve_part2)?,"
+            f"    Entry {{ day: {day}, part1: day{day:02d}::solve_part1, "
+            f"part2: day{day:02d}::solve_part2 }},"
         )
 
 
