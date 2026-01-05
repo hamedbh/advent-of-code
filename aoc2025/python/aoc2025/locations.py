@@ -4,6 +4,7 @@ from pathlib import Path
 
 # Configuration constants
 TIMINGS_FILENAME = "timings.csv"
+ANSWERS_FILENAME = "answers.json"
 
 
 def find_project_root() -> Path:
@@ -30,6 +31,8 @@ INPUTS_DIR = DATA_DIR / "inputs"
 EXAMPLES_DIR = DATA_DIR / "examples"
 OUTPUTS_DIR = DATA_DIR / "outputs"
 PYTHON_OUTPUTS_DIR = OUTPUTS_DIR / "python"
+RUST_OUTPUTS_DIR = OUTPUTS_DIR / "rust"
 EXAMPLE_OUTPUTS_DIR = DATA_DIR / "example_outputs"
 TIMINGS_DIR = DATA_DIR / "timings"
 TIMINGS_FILE = TIMINGS_DIR / TIMINGS_FILENAME
+ANSWERS_FILE = DATA_DIR / ANSWERS_FILENAME

@@ -77,6 +77,8 @@ dependencies = [
  "csv",
  "rayon",
  "reqwest",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

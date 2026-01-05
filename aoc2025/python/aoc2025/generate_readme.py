@@ -1,6 +1,7 @@
 import csv
 
 from aoc2025 import locations
+from aoc2025.utils import load_expected_answers
 
 
 def get_all_timings() -> dict[tuple[int, int, str], float]:
@@ -26,25 +27,18 @@ def get_all_timings() -> dict[tuple[int, int, str], float]:
 
 
 def get_answers() -> dict[tuple[int, int], str]:
-    """Get all answers from output files.
+    """Get all answers from answers.json (canonical source).
 
     Returns:
-        Dict mapping (day, part) to answer
+        Dict mapping (day, part) to answer as string (for display)
     """
-    outputs_dir = locations.OUTPUTS_DIR
-
-    if not outputs_dir.exists():
-        return {}
+    expected_answers = load_expected_answers()
 
     answers = {}
-    for output_file in sorted(outputs_dir.glob("*/day*_part*.txt")):
-        # Parse filename: day01_part1.txt
-        parts = output_file.stem.split("_")
-        day = int(parts[0].replace("day", ""))
-        part = int(parts[1].replace("part", ""))
-
-        answer = output_file.read_text().strip()
-        answers[(day, part)] = answer
+    for day, parts in expected_answers.items():
+        for part, answer in parts.items():
+            # Convert int answer to string for display in README
+            answers[(day, part)] = str(answer)
 
     return answers
 
@@ -66,6 +60,7 @@ def generate_readme() -> str:
     answers = get_answers()
     timings = get_all_timings()
     languages = get_available_languages(timings)
+    expected_answers = load_expected_answers()
 
     # Find all completed days
     completed_days = set()
@@ -82,8 +77,15 @@ Solutions for [Advent of Code 2025](https://adventofcode.com/2025).
     # Generate section for each completed day
     for day in sorted(completed_days):
         # Count stars
-        has_part1 = (day, 1) in answers
-        has_part2 = (day, 2) in answers
+        def has_valid_answer(d: int, p: int) -> bool:
+            if (d, p) not in answers:
+                return False
+            if d not in expected_answers or p not in expected_answers[d]:
+                return False
+            return int(answers[(d, p)]) == expected_answers[d][p]
+
+        has_part1 = has_valid_answer(day, 1)
+        has_part2 = has_valid_answer(day, 2)
         stars = ""
         if has_part1 and has_part2:
             stars = " ⭐⭐"

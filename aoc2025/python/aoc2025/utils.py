@@ -1,4 +1,5 @@
 import csv
+import json
 from datetime import datetime
 from typing import Any
 
@@ -42,6 +43,9 @@ def save_answer(
         answer: The answer to save
         use_example: If True, save to example_outputs, else outputs
     """
+    # Validate before saving
+    validate_answer(day, part, answer, use_example=use_example)
+
     if use_example:
         output_dir = locations.EXAMPLE_OUTPUTS_DIR
     else:
@@ -86,3 +90,60 @@ def save_timing(
                 datetime.now().isoformat(),
             ]
         )
+
+
+def load_expected_answers() -> dict[int, dict[int, int]]:
+    """Load expected answers from JSON.
+
+    Returns:
+        Dictionary mapping day -> {part1: answer, part2: answer}
+    """
+    answers_file = locations.ANSWERS_FILE
+    try:
+        with open(answers_file) as f:
+            out = json.load(f)
+            return {
+                int(day): {int(part): answer for part, answer in v.items()}
+                for day, v in out.items()
+            }
+    except FileNotFoundError:
+        return {}
+
+
+def validate_answer(
+    day: int, part: int, answer: int, use_example: bool = False
+) -> bool:
+    """Validate an answer against expected value.
+
+    Args:
+        day: Day number (1-25)
+        part: Part number (1 or 2)
+        answer: The computed answer
+        use_example: If True, skip validation (examples have different answers)
+
+    Returns:
+        True if validation passes
+
+    Raises:
+        ValueError: If answer doesn't match expected value
+    """
+    if use_example:
+        return True  # Don't validate the test examples
+
+    expected_answers = load_expected_answers()
+
+    if day not in expected_answers:
+        return True  # No expected answer stored yet
+
+    if part not in expected_answers[day]:
+        return True  # No expected answer for this part yet
+
+    expected = expected_answers[day][part]
+
+    if answer != expected:
+        raise ValueError(
+            f"Day {day} Part {part} validation failed! "
+            f"Expected {expected}, got {answer}"
+        )
+
+    return True

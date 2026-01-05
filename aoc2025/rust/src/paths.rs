@@ -6,6 +6,7 @@ pub struct Paths {
     pub rust_outputs_dir: PathBuf,
     pub example_outputs_dir: PathBuf,
     pub timings_file: PathBuf,
+    pub answers_file: PathBuf,
 }
 impl Paths {
     pub fn new() -> Self {
@@ -17,6 +18,7 @@ impl Paths {
             rust_outputs_dir: data_dir.join("outputs").join("rust"),
             example_outputs_dir: data_dir.join("example_outputs"),
             timings_file: data_dir.join("timings").join("timings.csv"),
+            answers_file: data_dir.join("answers.json"),
         }
     }
 }
