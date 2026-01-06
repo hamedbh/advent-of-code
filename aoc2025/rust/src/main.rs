@@ -5,6 +5,7 @@ use std::time::Instant;
 mod day01;
 mod day02;
 mod day03;
+mod day04;
 mod input;
 mod paths;
 
@@ -31,6 +32,11 @@ static DAYS: &[Entry] = &[
         day: 3,
         part1: day03::solve_part1,
         part2: day03::solve_part2,
+    },
+    Entry {
+        day: 4,
+        part1: day04::solve_part1,
+        part2: day04::solve_part2,
     },
 ];
 

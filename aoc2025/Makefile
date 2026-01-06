@@ -21,7 +21,7 @@ python: $(PY_ANSWER_FILES)
 
 # Pattern rule to generate answer files from input data and Python scripts
 data/outputs/python/day%_part1.txt data/outputs/python/day%_part2.txt: python/aoc2025/day%.py data/inputs/day%.txt
-	@echo "Running day$*..."
+	@echo "Running Python day$*..."
 	@uv run python3 -m aoc2025.day$*
 
 ## Run Python solution for specific day
