@@ -17,9 +17,9 @@ def solve_part1(lines: list[str]) -> int:
     max_index = len(input_data[0]) - 1
     split_count = 0
     for i in range(1, len(input_data)):
-        below_positions = [input_data[i][j] for j in beams]
         new_beams = []
-        for beam_col, char_below in zip(beams, below_positions, strict=True):
+        for beam_col in beams:
+            char_below = input_data[i][beam_col]
             if char_below == "^":
                 split_count += 1
                 new_beams.append(beam_col - 1)
@@ -36,11 +36,9 @@ def solve_part2(lines: list[str]) -> int:
     beams = {i: 1 for i, s in enumerate(input_data[0]) if s == "S"}
     max_index = len(input_data[0]) - 1
     for i in range(1, len(input_data)):
-        below_positions = [input_data[i][j] for j in beams.keys()]
         new_beams = {}
-        for beam_col, char_below in zip(
-            beams.keys(), below_positions, strict=True
-        ):
+        for beam_col in beams.keys():
+            char_below = input_data[i][beam_col]
             if char_below == "^":
                 if beam_col - 1 >= 0:
                     new_beams[beam_col - 1] = (

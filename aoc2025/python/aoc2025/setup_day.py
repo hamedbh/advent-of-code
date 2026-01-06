@@ -114,15 +114,18 @@ if __name__ == "__main__":
 def create_rust_template(day: int) -> str:
     """Create Rust solution template."""
     return """use anyhow::Result;
+
 pub fn parse_input(lines: &[String]) -> Vec<String> {
     // TODO: Implement parsing
     lines.to_vec()
 }
+
 pub fn solve_part1(lines: &[String]) -> Result<i64> {
     let _input = parse_input(lines);
     // TODO: Implement part 1
     Ok(0)
 }
+
 pub fn solve_part2(lines: &[String]) -> Result<i64> {
     let _input = parse_input(lines);
     // TODO: Implement part 2

@@ -8,6 +8,7 @@ mod day03;
 mod day04;
 mod day05;
 mod day06;
+mod day07;
 mod input;
 mod paths;
 
@@ -49,6 +50,11 @@ static DAYS: &[Entry] = &[
         day: 6,
         part1: day06::solve_part1,
         part2: day06::solve_part2,
+    },
+    Entry {
+        day: 7,
+        part1: day07::solve_part1,
+        part2: day07::solve_part2,
     },
 ];
 
