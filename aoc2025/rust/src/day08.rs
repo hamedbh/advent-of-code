@@ -32,15 +32,30 @@ impl UnionFind {
         }
     }
 
-    pub fn find_root(&self, x: usize) -> usize {
+    pub fn find_root(&mut self, x: usize) -> usize {
+        // First pass finds the root
         let mut current: usize = x;
         loop {
             if self.parents[current] == current {
-                return current;
+                break;
             } else {
                 current = self.parents[current];
             }
         }
+        let root = current;
+
+        // second pass compresses the path
+        let mut current = x;
+        while current != root {
+            // steps are:
+            //   1. save the next before overwriting
+            //   2. point current directly at the root
+            //   3. Update current to next
+            let next = self.parents[current];
+            self.parents[current] = root;
+            current = next;
+        }
+        root
     }
 
     pub fn union(&mut self, x: usize, y: usize) -> i64 {
