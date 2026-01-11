@@ -79,7 +79,7 @@ def solve_part2(lines: list[str]) -> int:
                 grid[y1][x] = "#"
 
     # Now we find some point on the inside of the polygon with
-    # with raycasting
+    # raycasting
     inside_point = None
     for y in range(height):
         for x in range(width):
