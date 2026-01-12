@@ -105,8 +105,8 @@ Solutions for [Advent of Code 2025](https://adventofcode.com/2025).
 
 | Part | Answer | Python (s) | Rust (s) | Rust speedup |
 |------|--------|----------|----------|---------|
-| 1 | 519 | 0.003292 | N/A | |
-| 2 | 0 | 0.000001 | N/A | |
+| 1 | 519 | 0.003292 | 0.000972 | 3.4x |
+| 2 | 0 | 0.000001 | 0.000000 | |
 
 ---
 
